@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>NPSHOP | Đăng nhập</title>
+<link rel="icon" type="image/x-icon" th:href="@{/user/img/namphuong.png}">
+
+    <th:block th:include="@{/fragments/css}"></th:block>
+
+</head>
+<body>
+<th:block th:include="@{/fragments/header}"></th:block>
+
+<!-- Header Section End -->
+<div class="container login__page">
+    <div class="col-sm-8 m-auto">
+        <div class="card border-0 shadow rounded-3 my-5">
+            <div class="card-body p-4 p-sm-5">
+                <h4 class="card-title text-center text-uppercase font-weight-bold" style="color: #5dc0dd;">Đăng nhập</h4>
+               	<h3 style="color:red" th:text="${message}"></h3>
+                <form method="post" th:object="${userRequest}" th:action="@{/login}">
+                    <div class="form-floating mb-3">
+                        <label for="floatingInput">Tên đăng nhập</label>
+                        <input type="text" class="form-control" name="username" id="floatingInput" autofocus>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label for="floatingPassword">Mật khẩu</label>
+                        <input type="password" class="form-control" name="hashPassword" id="floatingPassword" placeholder="">
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
+                            <label class="form-check-label" for="rememberPasswordCheck">
+                                Ghi nhớ mật khẩu
+                            </label>
+                        </div>
+                        <div>
+                            <a class="config-link-href" th:href="@{/forgot-password}" style="">Quên mật khẩu?</a>
+                        </div>
+                    </div>
+                    <div class="d-grid text-center">
+                        <button name="send" class="btn btn-success btn-login text-uppercase fw-bold" type="submit">
+                            Đăng nhập
+                        </button>
+                    </div>
+                    <div class="d-grid text-center mt-4">
+                    	<div>Bạn chưa có tài khoản?<a th:href="@{/register}"> Đăng ký</a></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:include="@{/fragments/footer}">
+</th:block>
+<!-- Js Plugins -->
+<script th:src="@{/user/js/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/user/js/bootstrap.min.js}"></script>
+<script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/user/js/jquery-ui.min.js}"></script>
+<script th:src="@{/user/js/jquery.slicknav.js}"></script>
+<script th:src="@{/user/js/mixitup.min.js}"></script>
+<script th:src="@{/user/js/owl.carousel.min.js}"></script>
+<script th:src="@{/user/js/main.js}"></script>
+</body>
+
+</html>

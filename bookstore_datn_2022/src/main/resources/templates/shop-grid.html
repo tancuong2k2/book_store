@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>NPSHOP | Sản phẩm</title>
+<link rel="icon" type="image/x-icon" th:href="@{/user/img/namphuong.png}">
+
+<th:block th:include="@{/fragments/css}"></th:block>
+
+</head>
+<body>
+   
+   <th:block th:include="@{/fragments/header}"></th:block>
+
+    <!-- Product Section Begin -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="sidebar">
+                        <div class="sidebar__item">
+                            <h4>Chuyên đề sách</h4>
+                            <ul th:each="category : ${categories}">
+                                <li><a th:href="|/shop-grid/${category.slug}|" th:text="${category.name}"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="product__discount" th:if="${isSearched == null && #lists.size(discountProducts) > 0}">
+                        <div class="section-title product__discount__title">
+                            <h2>Sách Đang Giảm Giá</h2>
+                        </div>
+                        <div class="row">
+                            <div class="product__discount__slider owl-carousel">
+                                <div class="col-lg-4" th:each="product : ${discountProducts}">
+                                    <div class="product__discount__item">
+                                        <div class="product__discount__item__pic set-bg"
+                                        	th:data-setbg="|/user/img/product/${product.imgName}|">
+                                            <div class="product__discount__percent" th:if="${product.discount > 0}" th:text="|-${product.discount}%|"></div>
+                                            <ul class="product__item__pic__hover">
+                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                                <li><a th:attr="onclick=|addToCart('${product.id}')|"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__discount__item__text">
+                                            <span th:text="|${product.category.name}|"></span>
+                                            <h5><a th:href="|/shop-details/${product.slug}|" th:text=${product.name}></a></h5>
+                                            <div class="product__item__price" th:if="${product.discount > 0}">[[${#numbers.formatDecimal(product.price - (product.price * product.discount / 100), 0, 'COMMA', 0, 'POINT') + ' đ'}]] 
+		                                    	<span th:if="${product.discount > 0}" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span>
+		                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter__item">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-5">
+                                <div class="filter__sort">
+                                    <span>Sắp xếp theo</span>
+                                    <select>
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="filter__found">
+                                    <h6><span th:text="${totalProducts}"></span> Sản phẩm được tìm thấy</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+						<div class="col-lg-12">
+							<div class="featured__controls">
+								<ul>
+									<li class="" data-filter=".all">All</li>
+									<li class="" th:data-filter="@{'.' + ${productType.slug}}" th:each="productType : ${productTypes}" th:text="${productType.name}"></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+                    <div class="row featured__filter">
+                        <div th:class="@{'col-lg-4 col-md-6 col-sm-6 mix all ' + ${product.productType.slug}}" th:each="product : ${products}">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" style="cursor: pointer;" th:attr="onclick=|shopDetailPage('${product.slug}')|"
+									th:data-setbg="|/user/img/product/${product.imgName}|">
+									<div class="product__discount__percent" th:if="${product.discount > 0}" th:text="|-${product.discount}%|"></div>
+                                    <ul class="product__item__pic__hover">
+                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li><a th:attr="onclick=|addToCart('${product.id}')|"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                	<span th:text="|Chuyên đề: ${product.category.name}|"></span>
+                                    <h6>
+                                    	<a th:href="|/shop-details/${product.slug}|" th:text=${product.name}></a>
+                                    </h6>
+                                    <div class="product__item__price" th:unless="${product.discount > 0}" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + ' đ'}"></div>
+                                    <div class="product__item__price" th:if="${product.discount > 0}">[[${#numbers.formatDecimal(product.price - (product.price * product.discount / 100), 0, 'COMMA', 0, 'POINT') + ' đ'}]] 
+                                    	<span th:if="${product.discount > 0}" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product__pagination" th:if="${totalPages > 1}">
+                    	<a th:class="${currentPage == 1 ? 'disabled' : ''}"
+                    		th:onclick="'isSearchedPage('+ ${currentPage > 1 ? 1 : 1} +')'"
+                    		th:text="1">
+                    	</a>
+                        <a th:class="${currentPage == 1 ? 'disabled' : ''}"
+                        	th:onclick="'isSearchedPage('+ ${currentPage > 1 ? currentPage-1 : 1} +')'">
+                        	<i class="fa fa-long-arrow-left"></i>
+                        </a>
+                        <a class="page__number" th:text="|Trang ${currentPage}|"></a>
+                        <a th:class="${currentPage == totalPages ? 'disabled' : '' }"
+                        	th:onclick="'isSearchedPage('+ ${currentPage < totalPages ? currentPage+1 : totalPages} +')'">
+                        	<i class="fa fa-long-arrow-right"></i>
+                        </a>
+                        <a th:class="${currentPage == totalPages ? 'disabled' : '' }"
+                        	th:onclick="'isSearchedPage('+ ${currentPage < totalPages ? totalPages : totalPages} +')'"
+                        	th:text="${totalPages}">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Product Section End -->
+	<th:block th:include="@{/fragments/footer}">
+	</th:block>
+	    <!-- Js Plugins -->
+    <script th:src="@{/user/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/user/js/bootstrap.min.js}"></script>
+    <script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/user/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/user/js/jquery.slicknav.js}"></script>
+    <script th:src="@{/user/js/mixitup.min.js}"></script>
+    <script th:src="@{/user/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/user/js/main.js}"></script>
+</body>
+
+</html>

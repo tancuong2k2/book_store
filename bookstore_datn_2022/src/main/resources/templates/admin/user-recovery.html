@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Khôi phục người dùng - NPADMIN</title>
+
+    <!-- Favicon  -->
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/user/img/namphuong.png}">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/fontawesome-free/css/all.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+    <!-- iCheck -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <!-- JQVMap -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/jqvmap/jqvmap.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/admin/dist/css/adminlte.min.css}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/daterangepicker/daterangepicker.css}">
+    <!-- summernote -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/summernote/summernote-bs4.min.css}">
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" th:src="@{/admin/dist/img/AdminLTELogo.png}" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
+        <!-- Main Sidebar Container -->
+        <th:block th:include="admin/fragments/aside"></th:block>
+
+		<!-- Notify Error -->
+		<div id="divThongBao">
+			<div id="thongBao" style="display: none;" role="alert" align="center">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<span id="errorMessage" th:text="${errorMessage}"></span>
+				<span id="succeedMessage" th:text="${succeedMessage}"></span>
+			</div>
+		</div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1>Khôi phục người dùng</h1>
+						</div>
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+								<li class="breadcrumb-item"><a th:href="@{/admin/user}">Người dùng</a></li>
+								<li class="breadcrumb-item active">Khôi phục người dùng</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<h3 class="card-title" style="font-size: 24px">Danh sách người dùng đã xóa</h3>
+								</div>
+								<!-- /.card-header -->
+								<div class="card-body">
+									<table id="example1" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th></th>
+												<th>Id</th>
+												<th>Username</th>
+												<th>Fullname</th>
+												<th>Email</th>
+												<th style="width: 80px;">Avatar</th>
+												<th>Role</th>
+												<th>Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="user, index : ${users}">
+												<td th:text="${index.index + 1}"></td>
+												<td th:text="${user.id}"></td>
+												<td th:text="${user.username}"></td>
+												<td th:text="${user.fullname}"></td>
+												<td th:text="${user.email}"></td>
+												<td>
+													<img th:src="@{'/user-image/' + ${user.imgUrl == null || user.imgUrl == '' ? 'default.png' : user.imgUrl}}"
+														class="elevation-2" alt="User image"
+														style="width: 50px; height: 50px">
+												</td>
+												<td th:text="${user.role.name}"></td>
+												<td align="center">
+													<button class="btn btn-success"
+														th:attr="onclick='recoveryUser(\'' + ${user.username} + '\')'">
+														<i class="fa fa-undo" aria-hidden="true"></i>
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.card-body -->
+							</div>
+							<!-- /.card -->
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+					
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+		
+        <th:block th:include="admin/fragments/footer"></th:block>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+	<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+	<!-- Bootstrap 4 -->
+	<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- DataTables  & Plugins -->
+	<script th:src="@{/admin/plugins/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/plugins/jszip/jszip.min.js}"></script>
+	<script th:src="@{/admin/plugins/pdfmake/pdfmake.min.js}"></script>
+	<script th:src="@{/admin/plugins/pdfmake/vfs_fonts.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+	<!-- AdminLTE App -->
+	<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script th:src="@{/admin/dist/js/demo.js}"></script>
+	<!-- Page specific script -->
+    <script th:inline="javascript">
+	
+		// Tim kiem, phan trang, xuat file va print cho bang user
+		$(document).ready(function () {
+			$("#example1").DataTable({
+				"pageLength": 5,
+				"responsive": true,
+				"lengthChange": false,
+				"autoWidth": false,
+				"buttons": ["csv", "excel", "pdf", "print"]
+			}).buttons().container().appendTo(
+				'#example1_wrapper .col-md-6:eq(0)'
+			);
+		});
+	
+		// Lua chon thong bao thanh cong hay that bai, dat thoi gian bao lau se bien mat
+		$(document).ready(function () {
+			var errorMessage = $('#errorMessage').text();
+			var succeedMessage = $('#succeedMessage').text();
+	
+			if (errorMessage.length > 0) {
+				$('#thongBao').addClass('alert alert-danger');
+				$('#thongBao').css('display', 'block');
+			}
+	
+			if (succeedMessage.length > 0) {
+				$('#thongBao').addClass('alert alert-success');
+				$('#thongBao').css('display', 'block');
+			}
+	
+			setTimeout(function () {
+				$('#thongBao').css('display', 'none');
+			}, 5000);
+		});
+		
+		// Recovery
+		function recoveryUser(username) {
+			if (confirm("Bạn có muốn khôi phục tài khoản có username: " + username)) {
+				window.location.href = '/admin/user/recovery/recovery?username=' + username;
+			}
+		}
+
+    </script>
+</body>
+
+</html>

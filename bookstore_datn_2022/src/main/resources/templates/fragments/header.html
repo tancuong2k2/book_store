@@ -1,0 +1,250 @@
+<!-- Page Preloder -->
+<div id="preloder">
+	<div class="loader"></div>
+</div>
+
+<!-- Humberger Begin -->
+<div class="humberger__menu__overlay"></div>
+<div class="humberger__menu__wrapper">
+	<div class="humberger__menu__logo">
+		<a href="/index"><img th:src="@{/user/img/namphuong.png}" alt=""></a>
+	</div>
+	<div class="humberger__menu__cart">
+		<ul>
+			<li th:if="${session.currentUser != null}"><a href="#"><i
+					class="fa fa-heart"></i> <span>1</span></a></li>
+			<li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span
+					class="headerTotalQuantity"
+					th:text="${session.currentCart.totalQuantity}"></span></a></li>
+		</ul>
+		<div class="header__cart__price">
+			Giỏ hàng: <span class="headerTotalPrice"
+				th:text="${#numbers.formatDecimal(session.currentCart.totalPrice, 0, 'COMMA', 0, 'POINT') + ' Ä‘'}"></span>
+		</div>
+	</div>
+	<div class="humberger__menu__widget">
+		<div class="header__top__right__auth d-flex flex-column">
+			<div class="d-inline-block">
+				<a th:href="@{/login}" class="mr-4"
+					th:if="${session.currentUser == null}"><i class="fa fa-user"></i>
+					Đăng nhập</a>
+			</div>
+			<div class="d-inline-block">
+				<a th:href="@{/register}" th:if="${session.currentUser == null}"><i
+					class="fa fa-user-plus"></i> Đăng ký</a>
+			</div>
+			<div class="d-inline-block user__profile"
+				th:if="${session.currentUser != null}">
+				<a th:href="@{'/profile/' + ${session.currentUser.username}}">
+					Chào, <span class="font-weight-bold"
+					th:text="${session.currentUser.fullname}"></span>
+				</a>
+				<ul class="sub__menu">
+					<li><a href="/cart">Giỏ hàng<span
+							class="shopping__cart__quantity headerTotalQuantity"
+							th:text="|${session.currentCart.totalQuantity}|"></span></a></li>
+					<li><a
+						th:href="@{'/profile/' + ${session.currentUser.username}}">Hồ sơ</a></li>
+					<li><a
+						th:href="@{'/security/' + ${session.currentUser.username}}">Bảo mật</a></li>
+					<li><a href="/logout">Đăng xuất</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<nav class="humberger__menu__nav mobile-menu">
+		<ul>
+			<li th:classappend="${isIndexPage} ? active"><a href="/index">Trang chủ</a></li>
+			<li th:classappend="${isShopPage} ? active"><a href="/shop-grid">Sản phẩm</a></li>
+			<li th:classappend="${isAboutPage} ? active"><a href="/about">Giới thiệu</a></li>
+			<li th:classappend="${isContactPage} ? active"><a
+				href="/contact">Liên hệ</a></li>
+		</ul>
+	</nav>
+	<div id="mobile-menu-wrap"></div>
+	<div class="header__top__right__social">
+		<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
+			class="fa fa-linkedin"></i></a> <a href="#"><i class="fa fa-twitter"></i></a>
+		<a href="#"><i class="fa fa-pinterest-p"></i></a>
+	</div>
+	<div class="humberger__menu__contact">
+		<ul>
+			<li><i class="fa fa-envelope"></i> namphuongbookstore@gmail.com</li>
+			<li>Ưu đãi cuối năm, hàng trăm giảm giá</li>
+		</ul>
+	</div>
+</div>
+<!-- Humberger End -->
+
+<!-- Header Section Begin -->
+<header class="header">
+	<div class="header__top">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-6">
+					<div class="header__top__left">
+						<ul>
+							<li><i class="fa fa-envelope"></i>
+								namphuongbookstore@gmail.com</li>
+							<li th:text="#{user.advertisement}">Ưu đãi cuối năm, hàng trăm giảm giá</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="header__top__right">
+						<div class="header__top__right__social">
+							<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
+								class="fa fa-linkedin"></i></a> <a href="#"><i
+								class="fa fa-twitter"></i></a> <a href="#"><i
+								class="fa fa-pinterest-p"></i></a>
+						</div>
+						<div class="header__top__right__auth">
+							<div class="d-inline-block">
+								<a th:href="@{/login}" class="mr-4"
+									th:if="${session.currentUser == null}"><i
+									class="fa fa-user" th:text="#{user.login}"></i ></a>
+							</div>
+							<div class="d-inline-block">
+								<a th:href="@{/register}" th:if="${session.currentUser == null}"><i
+									class="fa fa-user-plus" th:text="#{user.register}"></i></a>
+							</div>
+							<div class="d-inline-block user__profile"
+								th:if="${session.currentUser != null}">
+								<a th:href="@{'/profile/' + ${session.currentUser.username}}">
+									Xin Chào, <span class="font-weight-bold"
+									th:text="${session.currentUser.fullname}"></span>
+								</a>
+								<ul class="sub__menu">
+									<li><a href="/cart">Giỏ hàng<span
+											class="shopping__cart__quantity headerTotalQuantity"
+											th:text="|${session.currentCart.totalQuantity}|"></span></a></li>
+									<li><a
+										th:href="@{'/profile/' + ${session.currentUser.username}}">Hồ sơ</a></li>
+									<li><a
+										th:href="@{'/security/' + ${session.currentUser.username}}">Bảo mật</a></li>
+									<li><a href="/logout">Đăng xuất</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3">
+				<div class="header__logo">
+					<a href="/index"><img th:src="@{/user/img/namphuong1.png}"
+						style="height: 150px; width: 200px" alt=""></a>
+				</div>
+			</div>
+			<div class="col-lg-6 d-flex align-items-center">
+				<!-- <nav class="header__menu">
+                    <ul>
+                       <li th:classappend="${isIndexPage} ? active"><a href="/index">Trang chá»§</a></li>
+			           <li th:classappend="${isShopPage} ? active"><a href="/shop-grid">Sáº£n pháº©m</a></li>
+
+			           <li th:classappend="${isAboutPage} ? active"><a href="/about">LiÃªn há»‡</a></li>
+			           <li th:classappend="${isContactPage} ? active"><a href="/contact">Vá»� chÃºng tÃ´i</a></li>
+                    </ul>
+                </nav> -->
+				<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #5dc0dd;">					
+					<div class="collapse navbar-collapse" id="navbarNav">
+						<ul class="navbar-nav">
+							<li class="nav-item" th:classappend="${isIndexPage} ? active">
+								<a class="nav-link" href="/index" th:text="#{user.home}">Trang chủ</a>
+							</li>
+							
+							<li class="nav-item" th:classappend="${isShopPage} ? active">
+								<a class="nav-link" href="/shop-grid" th:text="#{user.product}">Sản phẩm</a>
+							</li>
+							 <!-- 
+							<li class="nav-item dropdown">
+						        <a class="nav-link dropdown-toggle"  th:text="#{user.thematic}"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						          Chuyên đề
+						        </a>
+						        <div class="dropdown-menu" aria-labelledby="navbarDropdown" 
+						        	th:each="category : ${categories}">
+							          <a class="dropdown-item" th:href="|/shop-grid/${category.slug}|"
+											th:text="|${category.name}|">
+								      </a>
+						        </div>
+						     -->
+					      	</li>
+							<li class="nav-item" th:classappend="${isAboutPage} ? active">
+								<a class="nav-link" href="/about" th:text="#{user.aboutus}">Giới thiệu</a>
+							</li>
+							 <li class="nav-item" th:classappend="${isContactPage} ? active">
+								<a class="nav-link " href="/contact" th:text="#{user.contact}">Liên hệ</a>
+							</li>
+							
+							<li class="nav-item dropdown">
+						        <a class="nav-link dropdown-toggle" th:text="#{user.language}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						          Ngôn ngữ
+						        </a>
+						        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							          <a class="dropdown-item" href="?lang=en">English
+								      </a>
+								      <a class="dropdown-item" href="?lang=vi">Tiếng việt
+								      </a>
+						        </div>
+						     
+					      	</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+			<div
+				class="col-lg-3 d-flex align-items-center justify-content-center">
+				<div class="header__cart">
+					<div class="header__cart__price modified__cart"
+						style="cursor: pointer;" onclick="window.location='/cart';" >
+						<a th:text="#{user.cart}">Giỏ hàng</a>: <span class="headerTotalPrice"
+							th:text="${#numbers.formatDecimal(session.currentCart.totalPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span>
+						<a> <i class="fa fa-shopping-bag"></i> <span
+							class="headerTotalQuantity"
+							th:text="${session.currentCart.totalQuantity}"></span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="humberger__open">
+			<i class="fa fa-bars"></i>
+		</div>
+	</div>
+</header>
+<!-- Header Section End -->
+
+<!-- Hero Section Begin -->
+<section class="hero hero-normal">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3">
+				<!-- <div class="hero__categories">
+					<div class="hero__categories__all">
+						<i class="fa fa-bars"></i> <span>ChuyÃªn Ä�á»�</span>
+					</div>
+					<ul>
+						<th:block th:each="category : ${categories}">
+							<li><a th:href="|/shop-grid/${category.slug}|"
+								th:text="|${category.name}|"></a></li>
+						</th:block>
+					</ul>
+				</div> -->
+			</div>
+			<div class="col-lg-9">
+				<div class="hero__search">
+					<div class="hero__search__form">
+						<div>
+							<input id="searchValue" type="text" placeholder="Bạn cần gì">
+							<button id="search" type="submit" class="site-btn" th:text="#{user.search}">Tìm Kiếm</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Hero Section End -->

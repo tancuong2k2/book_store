@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>NPSHOP | [[${product.name}]]</title>
+<link rel="icon" type="image/x-icon" th:href="@{/user/img/namphuong.png}">
+
+<th:block th:include="@{/fragments/css}"></th:block>
+
+</head>
+<body>
+	<th:block th:include="@{/fragments/header}"></th:block>
+
+    <section class="product-details spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="product__details__pic">
+                        <div class="product__details__pic__item">
+                            <img class="product__details__pic__item--large"
+                                th:src="|/user/img/product/${product.imgName}|" alt="">
+                        </div>
+						<!-- <div class="product__details__pic__slider owl-carousel">
+							<img th:data-imgbigurl="|/user/img/product/${product.id}/${product.imgName}|"
+                                th:src="|/user/img/product/${product.id}/${product.imgName}|" alt="">
+                            <img th:each="productImage : ${productImages}" th:data-imgbigurl="|/user/img/product/${productImage.product.id}/${productImage.imgName}|"
+                                th:src="|/user/img/product/${productImage.product.id}/${productImage.imgName}|" alt="Product Image">
+                        </div> -->
+					</div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="product__details__text">
+                        <h3 th:text="${product.name}"></h3>
+                        <div class="product__details__price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + ' đ'}"></div>
+                        <!-- <p th:text="${product.description}"></p> -->
+                        <div class="product__details__quantity">
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                	<span class="dec qtybtn" th:attr="onclick=|decQtybtnShopdetail()|">-</span>
+                                    <input id="shop-detail-quantity" type="text" value="1" min="1" th:max="${product.quantity}">
+                                    <span class="inc qtybtn" th:attr="onclick=|incQtybtnShopdetail('${product.quantity}')|">+</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="primary-btn" th:attr="onclick=|addToCartByProducts('${product.id}')|" style="cursor: pointer;">THÊM VÀO GIỎ HÀNG</a>
+                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <ul>
+                            <li><b>Mô tả</b> <span class="d-block mb-4" th:text="${product.description}"></span></li>
+                            <li><b>Chuyên Đề Sách </b> <span th:text="${product.category.name}"></span></li>
+                            <li><b>Loại</b> <span th:text="${product.productType.name}"></span></li>
+                            <!-- <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li> -->
+                            <li><b>Share on</b>
+                                <div class="share">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        <section class="content-item " id="comments">
+                            <div class="container">   
+                                <div class="row d-flex flex-wrap justify-content-center">
+                                    <div class="col-sm-8">   
+                                        <form id="foo" method="post" th:action="|/comment/${product.id}|">
+                                            <h3 class="pull-left">Viết bình luận</h3>
+                                            <button type="submit" class="btn btn-primary pull-right">Đăng</button>
+                                            <fieldset>
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-lg-2 hidden-xs"> 
+                                                        <img class="img-responsive" alt="Current user avatar" th:if="${session.currentUser != null}"
+                                                        	th:src="|/user/img/user/${session.currentUser.imgUrl == null || session.currentUser.imgUrl == '' ? 'default.png' : session.currentUser.imgUrl}|">
+                                                        <img class="img-responsive" alt="Current user avatar" th:if="${session.currentUser == null}"
+                                                        	th:src="|/user/img/user/default.png|">
+                                                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-9 col-lg-10">
+                                                        <textarea class="form-control" id="message" name="message" placeholder="Your message" required></textarea>
+                                                    </div>
+                                                </div>  	
+                                            </fieldset>
+                                            <input type="hidden" name="productId" th:value="${product.id}">
+                                        </form>
+                                        
+                                        <div id="comment-list">
+	                                        <div class="pull-right" th:text="${commentMessage}"></div>
+	                                        <h3 th:text="${#lists.size(productReviews) > 0 ? #lists.size(productReviews) : 'Chưa có'} + ' đánh giá'"></h3>                                     
+	                                        <div class="media" th:if=${productReviews} th:each="productReview : ${productReviews}">
+	                                            <a class="pull-left" href="#"><img class="media-object"
+	                                            	th:src="|/user/img/user/${productReview.user.imgUrl == null || productReview.user.imgUrl == '' ? 'default.png' : productReview.user.imgUrl}|" alt="Avatar"></a>
+	                                            <div class="media-body">
+	                                                <h4 class="media-heading" th:text="${productReview.user.fullname}"></h4>
+	                                                <p th:text="${productReview.description}"></p>
+	                                                <ul class="list-unstyled list-inline media-detail pull-left">
+	                                                    <li><i class="fa fa-calendar"></i><span th:text="${#dates.format(productReview.createdDate, 'dd-MMM-yyyy HH:mm')}"></span></li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Product Details Section End -->
+
+    <!-- Related Product Section Begin -->
+    <section class="related-product" th:if="${#lists.size(relatedProducts) > 0}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title related__product__title">
+                        <h2>Sản phẩm về [[${product.productType.name}]]</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6" th:each="product : ${relatedProducts}">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" style="cursor: pointer;" th:attr="onclick=|window.location.href='/shop-details/${product.slug}'|"
+							th:data-setbg="|/user/img/product/${product.imgName}|">
+							<div class="product__discount__percent" th:if="${product.discount > 0}" th:text="|-${product.discount}%|"></div>
+                            <ul class="product__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>
+                            	<a th:href="|/shop-details/${product.slug}|" th:text=${product.name}></a>
+                            </h6>
+                            <div class="product__item__price" th:unless="${product.discount > 0}" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + ' đ'}"></div>
+                            <div class="product__item__price" th:if="${product.discount > 0}">[[${#numbers.formatDecimal(product.price - (product.price * product.discount / 100), 0, 'COMMA', 0, 'POINT') + ' đ'}]] 
+                            	<span th:if="${product.discount > 0}" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Related Product Section End -->
+
+
+	<th:block th:include="@{/fragments/footer}">
+	</th:block>
+    <!-- Js Plugins -->
+    <script th:src="@{/user/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/user/js/bootstrap.min.js}"></script>
+    <script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/user/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/user/js/jquery.slicknav.js}"></script>
+    <script th:src="@{/user/js/mixitup.min.js}"></script>
+    <script th:src="@{/user/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/user/js/main.js}"></script>
+    
+    <script>
+ 	// Variable to hold request
+    var request;
+
+    // Bind to the submit event of our form
+    $("#foo").submit(function(event){
+
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+
+        // Abort any pending request
+        if (request) {
+            request.abort();
+        }
+        // setup some local variables
+        var $form = $(this);
+
+        // Let's select and cache all the fields
+        var $inputs = $form.find("input, select, button, textarea");
+
+        // Serialize the data in the form
+        var serializedData = $form.serialize();
+
+        // Fire off the request to /form.php
+        $.ajax({
+            url: "/product/comment",
+            type: "post",
+            data: serializedData,
+            success: function(data) {
+            	$('#message').val('');
+				$('#comment-list').replaceWith(data);
+			},
+			error: function(data) {
+				window.location.href = "/login";
+			}
+        });
+
+    });
+    </script>
+</body>
+
+</html>

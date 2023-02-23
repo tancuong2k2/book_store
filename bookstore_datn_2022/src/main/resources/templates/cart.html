@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>NPSHOP | Giỏ hàng</title>
+<link rel="icon" type="image/x-icon" th:href="@{/user/img/namphuong.png}">
+
+<th:block th:include="@{/fragments/css}"></th:block>
+
+</head>
+<body>
+	<th:block th:include="@{/fragments/header}"></th:block>
+   
+    <section class="shoping-cart spad" id="viewCartFragment">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="detail : ${session.currentCart.details}">
+                                    <td class="shoping__cart__item" th:attr="onclick=|location.href='/shop-details/${detail.value.slug}'|" style="cursor: pointer;">
+                                        <img th:src="|/user/img/product/${detail.key}/${detail.value.imgName}|" alt=""
+                                        	style="width: 80px;">
+                                        <h5 th:text="${detail.value.name}"></h5>
+                                        <div th:text="${detail.value.discount > 0 ? '- Giảm ' + detail.value.discount + '% -' : ''}"
+                                        	style="display: inline; font-size: 14px; margin-left: 10px; font-weight: 600; color: #7fad39;"></div>
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                    	[[${#numbers.formatDecimal(detail.value.price, 0, 'COMMA', 0, 'POINT') + ' đ'}]]
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                            	<span class="dec qtybtn" th:attr="onclick=|decQtybtn('${detail.key}')|">-</span>
+                                                <input type="number" th:value="${detail.value.quantity}" min="1" step="1"
+                                                	th:attr="onchange=|updateProduct('${detail.key}')|"
+                                                	th:id="quantity + ${detail.key}">
+                                                <span class="inc qtybtn" th:attr="onclick=|incQtybtn('${detail.key}')|">+</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total" th:unless="${detail.value.discount > 0}">
+                                        [[${#numbers.formatDecimal(detail.value.price * detail.value.quantity, 0, 'COMMA', 0, 'POINT') + ' đ'}]]
+                                    </td>
+                                    <td class="shoping__cart__total" th:if="${detail.value.discount > 0}">
+                                        [[${#numbers.formatDecimal((detail.value.price - (detail.value.price * detail.value.discount / 100)) * detail.value.quantity, 0, 'COMMA', 0, 'POINT') + ' đ'}]]
+                                    </td>
+                                    <td class="shoping__cart__item__close">
+                                        <span class="icon_close" th:attr="onclick=|removeProduct('${detail.key}')|"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="shoping__continue">
+                        <!-- <div class="shoping__discount">
+                            <h5>Discount Codes</h5>
+                            <form action="#">
+                                <input type="text" placeholder="Enter your coupon code">
+                                <button type="submit" class="site-btn">APPLY COUPON</button>
+                            </form>
+                        </div> -->
+                        <div class="shoping__discount">
+                            <h5>Số điện thoại</h5>
+                            <form>
+                                <input type="text" id="phone" placeholder="Nhập số điện thoại của bạn">
+                            </form>
+                            <div id="error-phone" style="font-weight: 600; color: #ff3333;"></div>
+                        </div>
+                        <div class="shoping__discount">
+                            <h5>Địa chỉ</h5>
+                            <form>
+                                <input type="text" id="address" placeholder="Nhập vào địa chỉ của bạn">
+                            </form>
+                            <div id="error-address" style="font-weight: 600; color: #ff3333;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="shoping__checkout">
+                        <h5>Giỏ hàng</h5>
+                        <ul>
+                            <li>Tổng sản phẩm <span th:text="${#numbers.formatDecimal(session.currentCart.totalPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span></li>
+                            <li>Phí ship <span th:text="${#numbers.formatDecimal(session.currentCart.shippingFee, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span></li>
+                            <li>Tất cả <span th:text="${#numbers.formatDecimal(session.currentCart.totalPrice + 30000, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span></li>
+                        </ul>
+                        <a class="primary-btn" th:attr="onclick=|checkout()|" style="cursor: pointer;">THANH TOÁN</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shoping Cart Section End -->
+
+
+	<th:block th:include="@{/fragments/footer}">
+	</th:block>
+    <!-- Js Plugins -->
+    <script th:src="@{/user/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/user/js/bootstrap.min.js}"></script>
+    <script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/user/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/user/js/jquery.slicknav.js}"></script>
+    <script th:src="@{/user/js/mixitup.min.js}"></script>
+    <script th:src="@{/user/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/user/js/main.js}"></script>
+</body>
+
+</html>

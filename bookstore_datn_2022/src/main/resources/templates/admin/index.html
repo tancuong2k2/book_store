@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thống kê - NPADMIN</title>
+
+    <!-- Favicon  -->
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/user/img/namphuong.png}">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/fontawesome-free/css/all.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+    <!-- iCheck -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <!-- JQVMap -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/jqvmap/jqvmap.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/admin/dist/css/adminlte.min.css}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/daterangepicker/daterangepicker.css}">
+    <!-- summernote -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/summernote/summernote-bs4.min.css}">
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" th:src="@{/admin/dist/img/AdminLTELogo.png}" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
+        <!-- Main Sidebar Container -->
+        <th:block th:include="admin/fragments/aside"></th:block>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Thống kê</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                                <li class="breadcrumb-item active">Thống kê</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <!-- Small boxes (Stat box) -->
+                    <div class="row">
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-danger">
+                                <div class="inner">
+                                    <h3 th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></h3>
+
+                                    <p>Doanh thu trong tháng</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-pie-graph"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">Thông tin thêm <i
+                                        class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-info">
+                                <div class="inner">
+                                    <h3 th:text="${totalOrder}"></h3>
+
+                                    <p>Đơn hàng mới trong tháng</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-bag"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">Thông tin thêm <i
+                                        class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <!-- <div class="col-lg-3 col-6">
+                            small box
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+                        
+                                    <p>Tỷ lệ thoát</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-stats-bars"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">Thông tin thêm <i
+                                        class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div> -->
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-warning">
+                                <div class="inner">
+                                    <h3 th:text="${totalUser}"></h3>
+
+                                    <p>Người dùng đăng ký trong tháng</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-person-add"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">Thông tin thêm <i
+                                        class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                    </div>
+                    <!-- /.row -->
+                    <!-- Main row -->
+                    <div class="row">
+                        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                        <section class="col-lg-12 connectedSortable">
+                            <!-- solid sales graph -->
+                            <div class="card">
+                                <div class="card-header border-0">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-th mr-1"></i>
+                                        Biểu đồ bán hàng
+                                    </h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="canvasChart"
+                                        style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="col-lg-12 connectedSortable">
+                            <!-- solid sales graph -->
+                            <div class="card">
+                                <div class="card-header border-0">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-th mr-1"></i>
+                                        Biểu đồ người dùng
+                                    </h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="canvasChartUser"
+                                        style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
+                                </div>
+                            </div>
+                        </section>
+                        <!-- right col -->
+                    </div>
+                    <!-- /.row (main row) -->
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <th:block th:include="admin/fragments/footer"></th:block>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+	<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+	<!-- Bootstrap 4 -->
+	<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- DataTables  & Plugins -->
+	<script th:src="@{/admin/plugins/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/plugins/jszip/jszip.min.js}"></script>
+	<script th:src="@{/admin/plugins/pdfmake/pdfmake.min.js}"></script>
+	<script th:src="@{/admin/plugins/pdfmake/vfs_fonts.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+	<!-- AdminLTE App -->
+	<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script th:src="@{/admin/dist/js/demo.js}"></script>
+	<!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+    /*
+        /*<![CDATA][*/
+        var totalPriceLast6Months = /*[[${chartData}]]*/ 'default';
+        /*]]>*/
+
+        const data = {
+          labels: totalPriceLast6Months[0],
+          datasets: [
+            {
+              label: 'Doanh thu',
+              data: totalPriceLast6Months[1],
+              borderColor: 'rgb(255, 99, 132)',
+              backgroundColor: 'rgb(255, 99, 132, 0.5)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Đơn hàng',
+              data: totalPriceLast6Months[2],
+              borderColor: 'rgb(54, 162, 235)',
+              backgroundColor: 'rgb(54, 162, 235, 0.5)',
+              yAxisID: 'y1',
+            }
+          ]
+        };
+        
+        const config = {
+   		  type: 'line',
+   		  data: data,
+   		  options: {
+   		    responsive: true,
+   		    interaction: {
+   		      mode: 'index',
+   		      intersect: false,
+   		    },
+   		    stacked: false,
+   		    plugins: {
+   		      title: {
+   		        display: true,
+   		        text: 'Doanh thu - Đơn hàng'
+   		      }
+   		    },
+   		    scales: {
+   		      y: {
+   		    	ticks: {
+   		    		callback: (value, index, values) => {
+   		    			return new Intl.NumberFormat('en', {
+   		    				style: 'currency',
+   		    				currency: 'VND',
+   		    				maximumSignificantDigits: 3
+   		    			}).format(value)
+   		    		}
+   		    	},
+   		        type: 'linear',
+   		        display: true,
+   		        position: 'left',
+   		      },
+   		      y1: {
+   		    	ticks: {
+   		    		callback: (value, index, values) => {
+   		    			return new Intl.NumberFormat('en', {
+   		    				minimumIntegerDigits: 1, 
+   		    				maximumFractionDigits: 0, 
+   		    				sminimumFractionDigits: 1
+   		    			}).format(value)
+   		    		}
+   		    	},
+   		        type: 'linear',
+   		        display: true,
+   		        position: 'right',
+
+   		        // grid line settings
+   		        grid: {
+   		          drawOnChartArea: false, // only want the grid lines for one axis to show up
+   		        },
+   		      }
+   		    }
+   		  },
+   		};
+		
+        const ctx = document.getElementById('canvasChart').getContext('2d');
+        new Chart(ctx, config);
+        
+        const data2 = {
+          labels: totalPriceLast6Months[0],
+          datasets: [
+            {
+              label: 'Người dùng mới',
+              data: totalPriceLast6Months[3],
+              borderColor: 'rgb(255, 159, 64)',
+              backgroundColor: 'rgb(255, 159, 64, 0.5)',
+              yAxisID: 'y',
+            }
+          ]
+        };
+        
+        const config2 = {
+   		  type: 'line',
+   		  data: data2,
+   		  options: {
+   		    responsive: true,
+   		    interaction: {
+   		      mode: 'index',
+   		      intersect: false,
+   		    },
+   		    stacked: false,
+   		    plugins: {
+   		      title: {
+   		        display: true,
+   		        text: 'Người dùng'
+   		      }
+   		    },
+   		    scales: {
+   		      y: {
+   		        type: 'linear',
+   		        display: true,
+   		        position: 'left',
+   		      }
+   		    }
+   		  },
+   		};
+		
+        const ctx2 = document.getElementById('canvasChartUser').getContext('2d');
+        new Chart(ctx2, config2);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>NP | Đơn hàng của tôi</title>
+<link rel="icon" type="image/x-icon" th:href="@{/user/img/namphuong.png}">
+
+<link rel="stylesheet" th:href="@{/user/css/security.css}" type="text/css">
+<th:block th:include="@{/fragments/css}"></th:block>
+<style>
+	#myTabContent {
+		margin: 20px 0;
+		min-height: 200px;
+	}
+</style>
+</head>
+<body>
+	<th:block th:include="@{/fragments/header}"></th:block>
+
+    <div class="container-xl px-4 mt-4">
+        <!-- Account page navigation-->
+        <nav class="nav nav-borders">
+        <a class="nav-link ms-0" th:href="|/profile/${session.currentUser.username}|">Hồ sơ</a>
+        <a class="nav-link" th:href="|/security/${session.currentUser.username}|">Bảo mật</a>
+        <a class="nav-link active" th:href="|/my-order/${session.currentUser.username}|">Đơn hàng</a>
+        </nav>
+        <hr class="mt-0 mb-4">
+        <div class="">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+			  <li class="nav-item" role="presentation">
+			    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#tab-all" type="button" role="tab" aria-controls="home" aria-selected="true">Tất cả</button>
+			  </li>
+			  <li class="nav-item" role="presentation">
+			    <button class="nav-link" id="chuaxn-tab" data-bs-toggle="tab" data-bs-target="#tab-chuaxn" type="button" role="tab" aria-controls="profile" aria-selected="false">Chưa xác nhận</button>
+			  </li>
+			  <li class="nav-item" role="presentation">
+			    <button class="nav-link" id="daxn-tab" data-bs-toggle="tab" data-bs-target="#tab-daxn" type="button" role="tab" aria-controls="contact" aria-selected="false">Đã xác nhận</button>
+			  </li>
+			  <li class="nav-item" role="presentation">
+			    <button class="nav-link" id="danggh-tab" data-bs-toggle="tab" data-bs-target="#tab-danggh" type="button" role="tab" aria-controls="contact" aria-selected="false">Đang giao hàng</button>
+			  </li>
+			  <li class="nav-item" role="presentation">
+			    <button class="nav-link" id="dagh-tab" data-bs-toggle="tab" data-bs-target="#tab-dagh" type="button" role="tab" aria-controls="contact" aria-selected="false">Đã giao hàng</button>
+			  </li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+			<!-- All -->
+			  <div class="tab-pane fade show active" id="tab-all" role="tabpanel" aria-labelledby="home-tab">
+			  	<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title" style="font-size: 24px">Danh sách tất cả đơn hàng</h3>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Địa chỉ</th>
+											<th>Điện thoại</th>
+											<th>Phí vận chuyển</th>
+											<th>Thành tiền</th>
+											<th>Ngày đặt</th>
+											<th>Trạng thái đơn hàng</th>
+											<th>Xem</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="order, index : ${orders}">
+											<td th:text="${index.index + 1}"></td>
+											<td th:text="${order.address}"></td>
+											<td th:text="${order.phone}"></td>
+											<td th:text="${#numbers.formatDecimal(order.shippingFee, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${order.createdDate}"></td>
+											<td th:text="${order.orderStatus.displayValue}"></td>
+											<td align="center">
+												<button class="btn btn-success"
+													th:attr="onclick='editOrder(\'' + ${order.id} + '\')'">
+													<i class="fa fa-search" aria-hidden="true"></i>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col -->
+				</div>
+			  </div>
+			  <!-- Chua xac nhan -->
+			  <div class="tab-pane fade" id="tab-chuaxn" role="tabpanel" aria-labelledby="chuaxn-tab">
+			  	<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title" style="font-size: 24px">Danh sách tất cả đơn hàng</h3>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Địa chỉ</th>
+											<th>Điện thoại</th>
+											<th>Phí vận chuyển</th>
+											<th>Thành tiền</th>
+											<th>Ngày đặt</th>
+											<th>Trạng thái đơn hàng</th>
+											<th>Xem</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="order, index : ${ordersChuaXN}">
+											<td th:text="${index.index + 1}"></td>
+											<td th:text="${order.address}"></td>
+											<td th:text="${order.phone}"></td>
+											<td th:text="${#numbers.formatDecimal(order.shippingFee, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${order.createdDate}"></td>
+											<td th:text="${order.orderStatus.displayValue}"></td>
+											<td align="center">
+												<button class="btn btn-success"
+													th:attr="onclick='editOrder(\'' + ${order.id} + '\')'">
+													<i class="fa fa-search" aria-hidden="true"></i>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col -->
+				</div>
+			  </div>
+			  <!-- Da xac nhan -->
+			  <div class="tab-pane fade" id="tab-daxn" role="tabpanel" aria-labelledby="contact-tab">
+			  	<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title" style="font-size: 24px">Danh sách tất cả đơn hàng</h3>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Địa chỉ</th>
+											<th>Điện thoại</th>
+											<th>Phí vận chuyển</th>
+											<th>Thành tiền</th>
+											<th>Ngày đặt</th>
+											<th>Trạng thái đơn hàng</th>
+											<th>Xem</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="order, index : ${ordersDaXN}">
+											<td th:text="${index.index + 1}"></td>
+											<td th:text="${order.address}"></td>
+											<td th:text="${order.phone}"></td>
+											<td th:text="${#numbers.formatDecimal(order.shippingFee, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${order.createdDate}"></td>
+											<td th:text="${order.orderStatus.displayValue}"></td>
+											<td align="center">
+												<button class="btn btn-success"
+													th:attr="onclick='editOrder(\'' + ${order.id} + '\')'">
+													<i class="fa fa-search" aria-hidden="true"></i>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col -->
+				</div>
+			  </div>
+			  <!-- Dang giao hang -->
+			  <div class="tab-pane fade" id="tab-danggh" role="tabpanel" aria-labelledby="contact-tab">
+			  	<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title" style="font-size: 24px">Danh sách tất cả đơn hàng</h3>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Địa chỉ</th>
+											<th>Điện thoại</th>
+											<th>Phí vận chuyển</th>
+											<th>Thành tiền</th>
+											<th>Ngày đặt</th>
+											<th>Trạng thái đơn hàng</th>
+											<th>Xem</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="order, index : ${ordersDangGH}">
+											<td th:text="${index.index + 1}"></td>
+											<td th:text="${order.address}"></td>
+											<td th:text="${order.phone}"></td>
+											<td th:text="${#numbers.formatDecimal(order.shippingFee, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${order.createdDate}"></td>
+											<td th:text="${order.orderStatus.displayValue}"></td>
+											<td align="center">
+												<button class="btn btn-success"
+													th:attr="onclick='editOrder(\'' + ${order.id} + '\')'">
+													<i class="fa fa-search" aria-hidden="true"></i>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col -->
+				</div>
+			  </div>
+			  <!-- Da giao hang -->
+			  <div class="tab-pane fade" id="tab-dagh" role="tabpanel" aria-labelledby="contact-tab">
+			  	<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title" style="font-size: 24px">Danh sách tất cả đơn hàng</h3>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Địa chỉ</th>
+											<th>Điện thoại</th>
+											<th>Phí vận chuyển</th>
+											<th>Thành tiền</th>
+											<th>Ngày đặt</th>
+											<th>Trạng thái đơn hàng</th>
+											<th>Xem</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="order, index : ${ordersDaGH}">
+											<td th:text="${index.index + 1}"></td>
+											<td th:text="${order.address}"></td>
+											<td th:text="${order.phone}"></td>
+											<td th:text="${#numbers.formatDecimal(order.shippingFee, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+											<td th:text="${order.createdDate}"></td>
+											<td th:text="${order.orderStatus.displayValue}"></td>
+											<td align="center">
+												<button class="btn btn-success"
+													th:attr="onclick='editOrder(\'' + ${order.id} + '\')'">
+													<i class="fa fa-search" aria-hidden="true"></i>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col -->
+				</div>
+			  </div>
+			  
+			  <div id="table-order-details" class="row mt-4">
+					<!-- left column -->
+					<div class="col-12" th:if="${orderDetails != null}">
+						<!-- general form elements -->
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title" style="font-size: 24px;">Order Details</h3>
+							</div>
+							<div class="card-body">
+								<div class="col-6" th:text="${'Mã đơn hàng: ' + order.id}"></div>
+								<div class="col-6" th:text="${'Ngày tạo: ' + order.createdDate}"></div>
+								<div class="col-6" th:text="${'Username: ' + order.user.username}"></div>
+								<div class="col-6" th:text="${'Địa chỉ: ' + order.address}"></div>
+								<div class="col-6" th:text="${'Điện thoại: ' + order.phone}"></div>
+								<div class="col-6" th:text="${'Phí vận chuyển: ' + #numbers.formatDecimal(order.shippingFee, 0, 'COMMA', 0, 'POINT') + ' đ'}"></div>
+								<h5>Tổng giá trị đơn hàng <span class="badge bg-primary m-4" style="font-size: 20px;" th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span></h5>
+								<h5>Trạng thái đơn hàng <span class="badge bg-info m-4" th:text="${order.orderStatus}"></span></h5>
+			
+								<button class="btn btn-danger" th:attr="onclick='cancelOrder(\'' + '\')'">Hủy đơn hàng</button>
+								
+								<!-- Table order details -->
+								<table class="table table-bordered table-striped mt-4">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Order Detail Id</th>
+											<th>Product Id</th>
+											<th>Product Name</th>
+											<th>Price</th>
+											<th>Quantity</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="orderDetail, index : ${orderDetails}">
+											<td th:text="${index.index + 1}"></td>
+											<td th:text="${orderDetail.id}"></td>
+											<td th:text="${orderDetail.product.id}"></td>
+											<td th:text="${orderDetail.product.name}"></td>
+											<td th:text="${orderDetail.price}"></td>
+											<td th:text="${orderDetail.quantity}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- /.card -->
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+
+	<th:block th:include="@{/fragments/footer}"></th:block>
+	
+    <script th:src="@{/user/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/user/js/bootstrap.min.js}"></script>
+    <script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/user/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/user/js/jquery.slicknav.js}"></script>
+    <script th:src="@{/user/js/mixitup.min.js}"></script>
+    <script th:src="@{/user/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/user/js/main.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+	<script type="text/javascript">
+		function checkPasswordMatch(fieldConfirmPassword) {
+			if (fieldConfirmPassword.value != $("#newPassword").val()) {
+				fieldConfirmPassword
+						.setCustomValidity("Passwords do not match!");
+			} else {
+				fieldConfirmPassword.setCustomValidity("");
+			}
+		}
+	 	
+		function editOrder(id) {
+			var url = '/my-order/orderdetails?id=' + id;
+			$.get(url).done(function (data) {
+				$('#table-order-details').replaceWith(data);
+			});
+		}
+	</script>
+</body>
+
+</html>

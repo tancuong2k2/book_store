@@ -1,0 +1,113 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+	<!-- Brand Logo -->
+	<a th:href="@{/admin}" class="brand-link">
+	    <img th:src="@{/user/img/namphuong1.png}" alt="AdminLTE Logo"
+	        class="brand-image elevation-3" style="background: #fff;">
+	    <span class="brand-text font-weight-light">ADMIN</span>
+	</a>
+	
+	<!-- Sidebar -->
+	<div class="sidebar">
+	    <!-- Sidebar user panel (optional) -->
+	<div class="user-panel mt-3 pb-3 mb-3 d-flex" th:if="${session.currentUser != null}">
+	        <div class="info">
+	            <a href="#" class="d-block" th:text="${session.currentUser.username + ' - ' + session.currentUser.fullname}"></a>
+	        </div>
+	    </div>
+	
+	    <!-- Sidebar Menu -->
+	    <nav class="mt-2">
+	        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+	            data-accordion="false">
+	            <!-- Add icons to the links using the .nav-icon class
+	   				with font-awesome or any other icon font library -->
+	                <li class="nav-item">
+	                    <a th:href="@{/admin}" class="nav-link" th:classappend="${isAdminHomePage} ? active">
+	                        <i class="nav-icon fas fa-th"></i>
+	                        <p>Thống kê</p>
+	                    </a>
+	                </li>
+	                <li class="nav-item" th:classappend="${isAdminUserPage} ? menu-open">
+	                    <a th:href="@{/admin/user}" class="nav-link" th:classappend="${isAdminUserPage1} ? active">
+	                        <i class="nav-icon fas fa-user"></i>
+	                        <p>Người dùng<i class="right fas fa-angle-left"></i></p>
+	                    </a>
+	                    <ul class="nav nav-treeview">
+			              <li class="nav-item">
+			                <a th:href="@{/admin/user}" class="nav-link" th:classappend="${isAdminUserPage1} ? active">
+			                  <i class="far fa-circle nav-icon"></i>
+			                  <p>Quản lý</p>
+			                </a>
+			              </li>
+			              <!--  
+			              <li class="nav-item">
+			                <a th:href="@{/admin/user/recovery}" class="nav-link" th:classappend="${isAdminUserPage2} ? active">
+			                  <i class="far fa-circle nav-icon"></i>
+			                  <p>Khôi phục</p>
+			                </a>
+			              </li>
+			              -->
+			            </ul>
+	                </li>
+	                <li class="nav-item" th:classappend="${isAdminProductPage} ? menu-open">
+	                    <a th:href="@{/admin/product}" class="nav-link" th:classappend="${isAdminProductPage} ? active">
+	                        <i class="nav-icon fas fa-chart-pie"></i>
+							<p>Sản phẩm<i class="right fas fa-angle-left"></i></p>
+	                    </a>
+	                    <ul class="nav nav-treeview">
+			              <li class="nav-item">
+			                <a th:href="@{/admin/product}" class="nav-link" th:classappend="${isAdminProductPage1} ? active">
+			                  <i class="far fa-circle nav-icon"></i>
+			                  <p>Quản lý</p>
+			                </a>
+			              </li>
+			              <!-- 
+			              <li class="nav-item">
+			                <a th:href="@{/admin/product/image}" class="nav-link" th:classappend="${isAdminProductPage2} ? active">
+			                  <i class="far fa-circle nav-icon"></i>
+			                  <p>Hình ảnh sản phẩm	</p>
+			                </a>
+			              </li>
+			              <li class="nav-item">
+			                <a th:href="@{/admin/product/recovery}" class="nav-link" th:classappend="${isAdminProductPage3} ? active">
+			                  <i class="far fa-circle nav-icon"></i>
+			                  <p>Khôi phục</p>
+			                </a>
+			              </li>
+			              -->
+			            </ul>
+	                </li>
+	                <li class="nav-item" th:classappend="${isAdminOrderPage} ? menu-open">
+	                    <a th:href="@{/admin/order}" class="nav-link" th:classappend="${isAdminOrderPage} ? active">
+	                        <i class="nav-icon fas fa-shopping-cart"></i>
+	                        <p>Đơn hàng<i class="right fas fa-angle-left"></i></p>
+	                    </a>
+	                    <ul class="nav nav-treeview">
+			              <li class="nav-item">
+			                <a th:href="@{/admin/order}" class="nav-link" th:classappend="${isAdminOrderPage1} ? active">
+			                  <i class="far fa-circle nav-icon"></i>
+			                  <p>Quản lý</p>
+			                </a>
+			              </li>
+			            </ul>
+	                </li>
+					<li class="nav-item" th:classappend="${isAdminCommentPage} ? menu-open">
+	                    <a th:href="@{/admin/comment}" class="nav-link" th:classappend="${isAdminCommentPage} ? active">
+	                        <i class="nav-icon fas fa-shopping-cart"></i>
+	                        <p>Comment<i class="right fas fa-angle-left"></i></p>
+	                    </a>
+	                    <ul class="nav nav-treeview">
+			              <li class="nav-item">
+			                <a th:href="@{/admin/comment}" class="nav-link" th:classappend="${isAdminCommentPage} ? active">
+			                  <i class="far fa-circle nav-icon"></i>
+			                  <p>Quản lý</p>
+			                </a>
+			              </li>
+			            </ul>
+	                </li>
+	            </ul>
+	        </nav>
+	        <!-- /.sidebar-menu -->
+	</div>
+<!-- /.sidebar -->
+</aside>

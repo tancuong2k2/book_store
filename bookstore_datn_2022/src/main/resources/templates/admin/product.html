@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý sản phẩm - NPADMIN</title>
+
+    <!-- Favicon  -->
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/user/img/namphuong.png}">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/fontawesome-free/css/all.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+    <!-- iCheck -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <!-- JQVMap -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/jqvmap/jqvmap.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/admin/dist/css/adminlte.min.css}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/daterangepicker/daterangepicker.css}">
+    <!-- summernote -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/summernote/summernote-bs4.min.css}">
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" th:src="@{/admin/dist/img/AdminLTELogo.png}" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
+        <!-- Main Sidebar Container -->
+        <th:block th:include="admin/fragments/aside"></th:block>
+
+		<!-- Notify Error -->
+		<div id="divThongBao">
+			<div id="thongBao" style="display: none;" role="alert" align="center">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<span id="errorMessage" th:text="${errorMessage}"></span>
+				<span id="succeedMessage" th:text="${succeedMessage}"></span>
+			</div>
+		</div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1>Quản lý sản phẩm</h1>
+						</div>
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+								<li class="breadcrumb-item"><a th:href="@{/admin/product}">Sản phẩm</a></li>
+								<li class="breadcrumb-item active">Quản lý sản phẩm</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<h3 class="card-title" style="font-size: 24px">Danh sách sản phẩm</h3>
+									<button style="float: right" id="createBtn" type="button"
+										class="btn btn-success">Tạo sản phẩm mới</button>
+								</div>
+								<!-- /.card-header -->
+								<div class="card-body">
+									<table id="example1" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th></th>
+												<th>Id</th>
+												<th>Name</th>
+												<th>Province</th>
+												<th>Type</th>
+												<th>Quantity</th>
+												<th>Price</th>
+												<th>Discount</th>
+												<th style="width: 80px;">Image</th>
+												<th>Slug</th>
+												<th>Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="product, index : ${products}">
+												<td th:text="${index.index + 1}"></td>
+												<td th:text="${product.id}"></td>
+												<td th:text="${product.name}"></td>
+												<td th:text="${product.category.name}"></td>
+												<td th:text="${product.productType.name}"></td>
+												<td th:text="${product.quantity}"></td>
+												<td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+												<td th:text="${product.discount == 0 || product.discount == null ? '' : product.discount}"></td>
+												<td>
+													<img th:src="@{'/product-image/' + ${product.id} + '/' + ${product.imgName == null ? 'default.png' : product.imgName}}"
+														class="elevation-2" alt="Product image"
+														style="width: 50px; height: 50px">
+												</td>
+												<td th:text="${product.slug}"></td>
+												<td align="center">
+													<button class="btn btn-success"
+														th:attr="onclick='editProduct(\'' + ${product.id} + '\')'">
+														<i class="fa fa-edit" aria-hidden="true"></i>
+													</button>
+													<a class="btn btn-danger"
+														th:attr="onclick=|deleteProduct('${product.id}')|">
+														<i class="fa fa-trash" aria-hidden="true"></i>
+													</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.card-body -->
+							</div>
+							<!-- /.card -->
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+
+					<div class="row">
+						<!-- left column -->
+						<div class="col-12">
+							<!-- general form elements -->
+							<div class="card card-primary">
+								<div class="card-header">
+									<h3 class="card-title">Chi tiết sản phẩm</h3>
+								</div>
+								<!-- /.card-header -->
+								<!-- form start -->
+								<form id="form" method="POST" th:object="${productRequest}"
+									enctype="multipart/form-data">
+									<div class="card-body">
+										<div class="row">
+											<div class="col-8">
+												<div class="form-group">
+													<label for="id">Id</label>
+													<input type="text" class="form-control" id="id" readonly="true"
+														th:field="*{id}">
+												</div>
+												<div class="form-group">
+													<label for="name">Name</label>
+													<input type="text" class="form-control" id="name" readonly="true"
+														th:field="*{name}">
+													<p id="errorName" style="color: #ff3333"></p>
+												</div>
+												<div class="mb-3">
+													<label for="categories" class="form-label">Province</label>
+													<select class="form-control" name="categories" id="categories"
+														disabled>
+														<option value="0">-- Choose province --</option>
+														<option th:each="category : ${categories}"
+															th:value="${category.id}"
+															th:text="${category.name}"
+															th:selected="${category.id == categorySelected}">
+														</option>
+													</select>
+													<p id="errorCategories" style="color: #ff3333"></p>
+												</div>
+												<div class="mb-3">
+													<label for="productTypes" class="form-label">Brand</label>
+													<select class="form-control" name="productTypes" id="productTypes"
+														disabled>
+														<option value="0">-- Choose product type --</option>
+														<option th:each="productType : ${productTypes}"
+															th:value="${productType.id}"
+															th:text="${productType.name}"
+															th:selected="${productType.id == productTypeSelected}">
+														</option>
+													</select>
+													<p id="errorProductTypes" style="color: #ff3333"></p>
+												</div>
+												<div class="form-group">
+													<label for="quantity">Quantity</label>
+													<input type="number" class="form-control" id="quantity"
+														readonly="true" th:field="*{quantity}">
+													<p id="errorQuantity" style="color: #ff3333"></p>
+												</div>
+												<div class="form-group">
+													<label for="price">Price</label>
+													<input type="number" class="form-control" id="price" readonly="true"
+														th:field="*{price}">
+													<p id="errorPrice" style="color: #ff3333"></p>
+												</div>
+												<div class="form-group">
+													<label for="discount">Discount</label>
+													<input type="number" class="form-control" id="discount" readonly="true"
+														th:field="*{discount}">
+													<p id="errorDiscount" style="color: #ff3333"></p>
+												</div>
+												<div class="form-group">
+													<label for="description">Description</label>
+													<textarea class="form-control" id="description" name="description"
+          												rows="5" cols="33" readonly="true" th:field="*{description}"></textarea>
+												</div>
+												<div class="form-group">
+													<label for="slug">Slug</label>
+													<input type="text" class="form-control" id="slug" readonly="true"
+														th:field="*{slug}">
+													<p id="errorSlug" style="color: #ff3333"></p>
+												</div>
+											</div>
+											<div class="col-4">
+												<!-- Profile Image -->
+												<div class="card card-primary card-outline">
+													<div class="card-body box-profile">
+														<div class="text-center">
+															<img class="profile-user-img img-fluid img-circle"
+																style="width: 212px; height: 212px"
+																th:src="@{'/product-image/' + ${productRequest.id} + '/' + ${productRequest.imgName == null ? 'default.png' : productRequest.imgName}}"
+																alt="Product picture" id="productImgUpload">
+														</div>
+														<br />
+														<div class="form-group">
+															<label for="inputFile">Picture</label>
+															<div class="input-group">
+																<div class="custom-file">
+																	<input type="file" class="custom-file-input"
+																		id="inputFile" name="attach">
+																	<label class="custom-file-label"
+																		for="inputFile">Choose file</label>
+																</div>
+																<div class="input-group-append">
+																	<span class="input-group-text">Upload</span>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!-- /.card-body -->
+												</div>
+												<!-- /.card -->
+												<p id="errorImage" style="color: #ff3333; margin-left: 20px;"></p>
+											</div>
+										</div>
+									</div>
+									<!-- /.card-body -->
+									<div class="card-footer">
+										<button type="button" id="submitCreate" disabled
+											class="btn btn-primary">Create</button>
+										<button type="button" id="submitUpdate" th:attr="onclick='submitFormEdit()'"
+											disabled class="btn btn-success">Update</button>
+										<button type="button" class="btn btn-warning" th:attr="onclick='cancel()'">Cancel</button>
+									</div>
+								</form>
+							</div>
+							<!-- /.card -->
+						</div>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+		
+        <th:block th:include="admin/fragments/footer"></th:block>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+	<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+	<!-- Bootstrap 4 -->
+	<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- DataTables  & Plugins -->
+	<script th:src="@{/admin/plugins/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/plugins/jszip/jszip.min.js}"></script>
+	<script th:src="@{/admin/plugins/pdfmake/pdfmake.min.js}"></script>
+	<script th:src="@{/admin/plugins/pdfmake/vfs_fonts.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+	<script th:src="@{/admin/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+	<!-- AdminLTE App -->
+	<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script th:src="@{/admin/dist/js/demo.js}"></script>
+    <script th:inline="javascript">
+	 	// Tim kiem, phan trang, xuat file va print cho bang user
+		$(document).ready(function () {
+			$("#example1").DataTable({
+				"pageLength": 5,
+				"responsive": true,
+				"lengthChange": false,
+				"autoWidth": false,
+				"buttons": ["csv", "excel", "pdf", "print"]
+			}).buttons().container().appendTo(
+				'#example1_wrapper .col-md-6:eq(0)'
+			);
+		});
+	 	
+		// Hien thi anh khi chon file anh khac
+	    $(document).on('input', function () {
+			$('#inputFile').change(function () {
+				showImageThumbnail(this);
+			});
+		});
+
+		function showImageThumbnail(fileInput) {
+			file = fileInput.files[0];
+			reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('#productImgUpload').attr('src', e.target.result);
+			};
+
+			reader.readAsDataURL(file);
+		};
+		
+		// Lua chon thong bao thanh cong hay that bai, dat thoi gian bao lau se bien mat
+		$(document).ready(function () {
+			var errorMessage = $('#errorMessage').text();
+			var succeedMessage = $('#succeedMessage').text();
+	
+			if (errorMessage.length > 0) {
+				$('#thongBao').addClass('alert alert-danger');
+				$('#thongBao').css('display', 'block');
+			}
+	
+			if (succeedMessage.length > 0) {
+				$('#thongBao').addClass('alert alert-success');
+				$('#thongBao').css('display', 'block');
+			}
+	
+			setTimeout(function () {
+				$('#thongBao').css('display', 'none');
+			}, 5000);
+		});
+		
+		// Delete san pham
+		function deleteProduct(id) {
+			if (confirm("Bạn có muốn xóa sản phẩm có id: " + id)) {
+				window.location.href = '/admin/product/delete?id=' + id;
+			}
+		}
+		
+		$('#createBtn').click(function () {
+			$('html, body').animate({
+				scrollTop: $('#form').offset().top
+			}, 1000);
+			$('#form :input').prop('readonly', false);
+			$('#id').prop('readonly', true);
+			$("#categories, #productTypes").prop('disabled', false);
+			$('#submitCreate').prop('disabled', false);
+			$('#form').prop('action', '/admin/product/create');
+		});
+		
+		$('#submitCreate').click(function () {
+			var name = $('#name').val();
+			var category = $('#categories').val();
+			var productType = $('#productTypes').val();
+			var quantity = $('#quantity').val();
+			var price = $('#price').val();
+			var slug = $('#slug').val();
+			var check = true;
+			// >> Check begin
+			// Check name
+			if (name.length == 0) {
+				$('#errorName').text('Name must not be blank');
+				check = false;
+			} else if (name.length < 3 || name.length > 255) {
+				$('#errorName').text('Name must be greater than 3 and less than 255 characters');
+				check = false;
+			} else {
+				$('#errorName').text('');
+			}
+			// Check category
+			if (category == 0) {
+				$('#errorCategories').text('Please choose province');
+				check = false;
+			} else {
+				$('#errorCategories').text('');
+			}
+			// Check productType
+			if (productType == 0) {
+				$('#errorProductTypes').text('Please choose product type');
+				check = false;
+			} else {
+				$('#errorProductTypes').text('');
+			}
+			// Check quantity
+			if (quantity == null || quantity == "") {
+				$('#errorQuantity').text('Quantity must not be null');
+				check = false;
+			} else if (quantity < 0 || quantity > 10000) {
+				$('#errorQuantity').text('Quantity must be between 0 - 10000');
+				check = false;
+			} else {
+				$('#errorQuantity').text('');
+			}
+			// Check price
+			if (price == null || price == "") {
+				$('#errorPrice').text('Price must not be null');
+				check = false;
+			} else if (price < 1000 || price > 100000000) {
+				$('#errorPrice').text('Price must be between 0 - 100000000');
+				check = false;
+			} else {
+				$('#errorPrice').text('');
+			}
+			// Check slug
+			var slugCheck = /^[a-z0-9-]+$/;
+			if (slug.length == 0) {
+				$('#errorSlug').text('Slug must not be blank');
+				check = false;
+			} else if (slug.length < 3 || slug.length > 255) {
+				$('#errorSlug').text('Slug must be greater than 3 and less than 255 characters');
+				check = false;
+			} else if (!slugCheck.test(slug)) {
+				$('#errorSlug').text('Slug must be lowercase, include the characters a-z 0-9 and -');
+				check = false;
+			} else {
+				$('#errorSlug').text('');
+			}
+			// Check image
+			if ($('#inputFile').get(0).files.length === 0) {
+				$('#errorImage').text('Image must not be null');
+				check = false;
+			} else {
+				$('#errorImage').text('');
+			}
+			// << Check end
+			// Result
+			if (check) {
+				$('#form').submit();
+			}
+		});
+		
+		function editProduct(id) {
+			var url = '/admin/product/edit?id=' + id;
+			$.get(url).done(function (data) {
+				$('#form').replaceWith(data);
+				$('html, body').animate({
+					scrollTop: $('#form').offset().top
+				}, 1000);
+				$('#form :input').prop('readonly', false);
+				$('input#id').prop('readonly', true);
+				$("#categories, #productTypes").prop('disabled', false);
+				$('#submitUpdate').prop('disabled', false);
+				$('#form').prop('action', '/admin/product/edit/' + id);
+			});
+		}
+		
+		function submitFormEdit() {
+			var name = $('#name').val();
+			var category = $('#categories').val();
+			var productType = $('#productTypes').val();
+			var quantity = $('#quantity').val();
+			var price = $('#price').val();
+			var slug = $('#slug').val();
+			var check = true;
+			// >> Check begin
+			// Check name
+			if (name.length == 0) {
+				$('#errorName').text('Name must not be blank');
+				check = false;
+			} else if (name.length < 3 || name.length > 255) {
+				$('#errorName').text('Name must be greater than 3 and less than 255 characters');
+				check = false;
+			} else {
+				$('#errorName').text('');
+			}
+			// Check category
+			if (category == 0) {
+				$('#errorCategories').text('Please choose province');
+				check = false;
+			} else {
+				$('#errorCategories').text('');
+			}
+			// Check productType
+			if (productType == 0) {
+				$('#errorProductTypes').text('Please choose product type');
+				check = false;
+			} else {
+				$('#errorProductTypes').text('');
+			}
+			// Check quantity
+			if (quantity == null || quantity == "") {
+				$('#errorQuantity').text('Quantity must not be null');
+				check = false;
+			} else if (quantity < 0 || quantity > 10000) {
+				$('#errorQuantity').text('Quantity must be between 0 - 10000');
+				check = false;
+			} else {
+				$('#errorQuantity').text('');
+			}
+			// Check price
+			if (price == null || price == "") {
+				$('#errorPrice').text('Price must not be null');
+				check = false;
+			} else if (price < 1000 || price > 100000000) {
+				$('#errorPrice').text('Price must be between 0 - 100000000');
+				check = false;
+			} else {
+				$('#errorPrice').text('');
+			}
+			// Check slug
+			var slugCheck = /^[a-z0-9-]+$/;
+			if (slug.length == 0) {
+				$('#errorSlug').text('Slug must not be blank');
+				check = false;
+			} else if (slug.length < 3 || slug.length > 255) {
+				$('#errorSlug').text('Slug must be greater than 3 and less than 255 characters');
+				check = false;
+			} else if (!slugCheck.test(slug)) {
+				$('#errorSlug').text('Slug must be lowercase, include the characters a-z 0-9 and -');
+				check = false;
+			} else {
+				$('#errorSlug').text('');
+			}
+			// << Check end
+			// Result
+			if (check) {
+				$('#form').submit();
+			}
+		}
+		
+		function cancel() {
+			location.reload();
+		}
+    </script>
+</body>
+
+</html>

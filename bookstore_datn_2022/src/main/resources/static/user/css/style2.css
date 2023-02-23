@@ -1,0 +1,318 @@
+.content-item {
+    padding:30px 0;
+	background-color:#FFFFFF;
+}
+
+.content-item.grey {
+	background-color:#F0F0F0;
+	padding:50px 0;
+	height:100%;
+}
+
+.content-item h2 {
+	font-weight:700;
+	font-size:35px;
+	line-height:45px;
+	text-transform:uppercase;
+	margin:20px 0;
+}
+
+.content-item h3 {
+	font-weight:400;
+	font-size:20px;
+	color:#555555;
+	margin:10px 0 15px;
+	padding:0;
+}
+
+.content-headline {
+	height:1px;
+	text-align:center;
+	margin:20px 0 70px;
+}
+
+.content-headline h2 {
+	background-color:#FFFFFF;
+	display:inline-block;
+	margin:-20px auto 0;
+	padding:0 20px;
+}
+
+.grey .content-headline h2 {
+	background-color:#F0F0F0;
+}
+
+.content-headline h3 {
+	font-size:14px;
+	color:#AAAAAA;
+	display:block;
+}
+
+
+#comments {
+    box-shadow: 0 -1px 6px 1px rgba(0,0,0,0.1);
+	background-color:#FFFFFF;
+}
+
+#comments form {
+	margin-bottom:30px;
+}
+
+#comments .btn {
+	margin-top:7px;
+}
+
+#comments form fieldset {
+	clear:both;
+}
+
+#comments form textarea {
+	height:100px;
+}
+
+#comments .media {
+	border-top:1px dashed #DDDDDD;
+	padding:20px 0;
+	margin:0;
+}
+
+#comments .media > .pull-left {
+    margin-right:20px;
+}
+
+#comments .media img {
+	max-width:100px;
+}
+
+#comments .media h4 {
+	margin:0 0 10px;
+}
+
+#comments .media h4 span {
+	font-size:14px;
+	float:right;
+	color:#999999;
+}
+
+#comments .media p {
+	margin-bottom:15px;
+	text-align:justify;
+}
+
+#comments .media-detail {
+	margin:0;
+}
+
+#comments .media-detail li {
+	color:#AAAAAA;
+	font-size:12px;
+	padding-right: 10px;
+	font-weight:600;
+}
+
+#comments .media-detail a:hover {
+	text-decoration:underline;
+}
+
+#comments .media-detail li:last-child {
+	padding-right:0;
+}
+
+#comments .media-detail li i {
+	color:#666666;
+	font-size:15px;
+	margin-right:10px;
+}
+
+<!--  -->
+.config-link-href:hover {
+    color: #1929c9;
+}
+
+<!--  -->
+.modified__cart a {
+	position: relative;
+	padding: 10px;
+}
+
+.modified__cart a i {
+	font-size: 20px;
+    color: #1c1c1c;
+}
+
+.modified__cart a span {
+	height: 20px;
+    width: 20px;
+    background: #5dc0dd;
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 20px;
+    text-align: center;
+    font-weight: 700;
+    display: inline-block;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.modified__cart:hover span {
+	color: #5dc0dd;
+}
+
+.modified__cart:hover a span {
+	color: #1c1c1c;
+}
+
+.modified__cart:hover a span {
+	top: -2px;
+	right: -2px;
+}
+
+.product__pagination a {
+	cursor: pointer;
+}
+
+.product__pagination .page__number {
+	pointer-events: none;
+	border-color: #000;
+	color: #000;
+	width: 100px;
+}
+
+.product__pagination .disabled {
+	pointer-events: none;
+}
+
+.user__profile {
+	position: relative;
+	z-index: 1;
+}
+
+.user__profile .sub__menu {
+	display: block;
+    position: absolute;
+    min-width: 130px;
+    background: #fff;
+    right: 10px;
+    top: 80%;
+    visibility: hidden;
+    opacity: 0;
+    text-align: left;
+    z-index: 1;
+    box-shadow: 0 0 10px 3px rgb(0 0 0 / 5%);
+    padding: 6px 0 10px;
+    border-top: 4px solid #5dc0dd;
+    border-bottom: 2px solid #5dc0dd;
+    border-radius: 7px 7px 3px 3px;
+    -webkit-transition: all .2s ease-out 0s;
+    -moz-transition: all .2s ease-out 0s;
+    -ms-transition: all .2s ease-out 0s;
+    -o-transition: all .2s ease-out 0s;
+    transition: all .2s ease-out 0s;
+}
+
+.user__profile::after {
+	content: "";
+    top: 20px;
+    left: 0px;
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 10px;
+}
+
+.user__profile:hover .sub__menu {
+	visibility: visible;
+    opacity: 1;
+    top: 120%;
+}
+
+.user__profile .sub__menu::before {
+	border-style: solid;
+    border-width: 0 6px 6px 6px;
+    border-color: transparent transparent #5dc0dd transparent;
+    content: "";
+    top: -10px;
+    right: 25%;
+    position: absolute;
+    transition: .3s;
+    z-index: -1;
+    overflow: hidden;
+    -webkit-transition: all .2s ease-out 0s;
+    -moz-transition: all .2s ease-out 0s;
+    -ms-transition: all .2s ease-out 0s;
+    -o-transition: all .2s ease-out 0s;
+    transition: all .3s ease-out 0s;
+}
+
+.user__profile .sub__menu li {
+	display: block;
+	position: relative;
+	z-index: 1;
+}
+
+.user__profile .sub__menu li a {
+	font-size: 14px;
+	color: #252525;
+	font-weight: 600;
+	padding: 6px 20px;
+	text-transform: capitalize;
+	display: block;
+	-webkit-transition: all .2s ease-out 0s;
+    -moz-transition: all .2s ease-out 0s;
+    -ms-transition: all .2s ease-out 0s;
+    -o-transition: all .2s ease-out 0s;
+	transition: all .3s ease-out 0s;
+}
+
+.user__profile .sub__menu li a:hover {
+	color: #5dc0dd;
+	background: rgb(0 0 0 / 5%);
+}
+
+.user__profile .shopping__cart__quantity {
+	color: #5dc0dd;
+	margin-left: 8px;
+}
+
+.humberger__menu__widget .user__profile .sub__menu {
+	left: 10px;
+	right: unset;
+}
+
+.humberger__menu__widget .user__profile .sub__menu::before {
+	left: 25%;
+	right: unset;
+}
+
+.login__page,
+.register__page {
+	margin-bottom: 80px;
+}
+
+.login__page a,
+.register__page a {
+	color: #5dc0dd;
+}
+
+.login__page a:hover,
+.register__page a:hover {
+	color: #218838;
+}
+
+.login__page .btn,
+.register__page .btn {
+	width: 120px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
